@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Android Point Mode Test</string>
+    <string name="accessibility_service_label">Point Mode</string>
 </resources>
