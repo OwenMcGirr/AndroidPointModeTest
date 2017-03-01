@@ -1,5 +1,6 @@
 package com.owenmcgirr.androidpointmodetest;
 
+import android.content.Intent;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.util.Log;
@@ -59,6 +60,17 @@ public class PointModeService extends AccessibilityService {
         info.eventTypes = AccessibilityEvent.TYPES_ALL_MASK;
         info.feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC;
         setServiceInfo(info);
+
+        toggleService();
+    }
+
+    private void toggleService(){
+        Intent intent=new Intent(this, PointModeOverlay.class);
+        // Try to stop the service if it is already running
+        // Otherwise start the service
+        if(!stopService(intent)){
+            startService(intent);
+        }
     }
 
 }
