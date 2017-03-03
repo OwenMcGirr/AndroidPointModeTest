@@ -1,10 +1,18 @@
 package com.owenmcgirr.androidpointmodetest;
 
-import android.content.Intent;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
+import android.accessibilityservice.GestureDescription;
+import android.annotation.TargetApi;
+import android.content.Intent;
+import android.graphics.Path;
+import android.graphics.Point;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class PointModeService extends AccessibilityService {
 
@@ -62,6 +70,8 @@ public class PointModeService extends AccessibilityService {
         setServiceInfo(info);
 
         toggleService();
+
+        tapMiddleOfScreen();
     }
 
     private void toggleService(){
@@ -71,6 +81,43 @@ public class PointModeService extends AccessibilityService {
         if(!stopService(intent)){
             startService(intent);
         }
+    }
+
+    private void tapMiddleOfScreen() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+        final Point middle = new Point(width/2, height/2);
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                pressLocation(middle);
+            }
+        }, 1000, 1000);
+    }
+
+    @TargetApi(24)
+    private void pressLocation(Point position){
+        GestureDescription.Builder builder = new GestureDescription.Builder();
+        Path p = new Path();
+        p.moveTo(position.x, position.y);
+        p.lineTo(position.x+10, position.y+10);
+        builder.addStroke(new GestureDescription.StrokeDescription(p, 10L, 200L));
+        GestureDescription gesture = builder.build();
+        boolean isDispatched = dispatchGesture(gesture, new GestureResultCallback() {
+            @Override
+            public void onCompleted(GestureDescription gestureDescription) {
+                super.onCompleted(gestureDescription);
+                Log.d(TAG, "gesture completed");
+            }
+
+            @Override
+            public void onCancelled(GestureDescription gestureDescription) {
+                super.onCancelled(gestureDescription);
+                Log.d(TAG, "gesture cancelled");
+            }
+        }, null);
     }
 
 }
