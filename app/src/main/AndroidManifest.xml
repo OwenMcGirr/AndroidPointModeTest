@@ -24,7 +24,6 @@
             <meta-data android:resource="@xml/accessibility_service_config"
                 android:name="@string/accessibility_service_name"></meta-data>
         </service>
-        <service android:name=".PointModeOverlay"></service>
     </application>
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"></uses-permission>
