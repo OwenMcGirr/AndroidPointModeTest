@@ -22,7 +22,7 @@
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
             <meta-data android:resource="@xml/accessibility_service_config"
-                android:name="@string/accessibility_service_name"></meta-data>
+                android:name="android.accessibilityservice"></meta-data>
         </service>
     </application>
 

@@ -82,7 +82,7 @@ public class PointModeService extends AccessibilityService {
             public void run() {
                 pressLocation(middle);
             }
-        }, 1000, 1000);
+        }, 1000, 5000);
     }
 
     @TargetApi(24)
@@ -90,7 +90,7 @@ public class PointModeService extends AccessibilityService {
         GestureDescription.Builder builder = new GestureDescription.Builder();
         Path p = new Path();
         p.moveTo(position.x, position.y);
-        builder.addStroke(new GestureDescription.StrokeDescription(p, 10L, 200L));
+        builder.addStroke(new GestureDescription.StrokeDescription(p, 0, 50));
         GestureDescription gesture = builder.build();
         dispatchGesture(gesture, new GestureResultCallback() {
             @Override
